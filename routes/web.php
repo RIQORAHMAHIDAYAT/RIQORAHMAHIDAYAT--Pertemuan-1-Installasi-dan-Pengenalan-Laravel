@@ -3,66 +3,53 @@
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::get('/home', function () {
-    return "
-    <div style='text-align: center;'>
-        <h2>Selamat datang di Blibli Clone</h2>
-        <br><br>
-        <a href='/kategori'>Kategori Produk</a>
-        <br><br>
-        <a href='/produk-unggulan'>Produk Unggulan</a>
-        <br><br>
-        <a href='/promo-hari-ini'>Promo Hari Ini</a>
-        <br><br>
-        <a href='/keranjang'>Keranjang Saya</a>
-        <br><br>
-        <a href='/checkout'>Lanjut ke Pembayaran</a>
-    </div>
-    ";
+// Rute untuk homepage
+Route::get('/', function() {
+    return view('web.homepage'); // Halaman utama
 });
 
-// Halaman kategori
-Route::get('/kategori', function () {
-    return 'Ini adalah halaman kategori produk Blibli';
+// Rute untuk halaman Products
+Route::get('product', function() {
+    return view('web.product'); // Halaman produk
 });
 
-// Halaman produk unggulan
-Route::get('/produk-unggulan', function () {
-    return 'Ini adalah halaman produk unggulan Blibli';
+// Rute untuk halaman produk individual berdasarkan slug
+Route::get('product/{slug}', function($slug) {
+    return "halaman single product - ".$slug;
 });
 
-// Halaman promo hari ini
-Route::get('/promo-hari-ini', function () {
-    return 'Ini adalah halaman promo hari ini Blibli';
+// Rute untuk halaman Categories
+Route::get('categories', function() {
+    return view('web.categories'); // Halaman kategori produk
 });
 
-// Halaman keranjang belanja
-Route::get('/keranjang', function () {
-    return 'Ini adalah halaman keranjang saya Blibli';
+// Rute untuk halaman kategori individual berdasarkan slug
+Route::get('category/{slug}', function($slug) {
+    return "halaman single category - ".$slug;
 });
 
-// Halaman checkout (memerlukan login)
-Route::middleware(['auth'])->group(function () {
-    Route::get('/checkout', function () {
-        return 'Ini adalah halaman pembayaran Blibli';
-    });
+// Rute untuk halaman Cart
+Route::get('cart', function() {
+    return "halaman cart";
 });
 
-// Halaman utama
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// Rute untuk halaman Checkout
+Route::get('checkout', function() {
+    return "halaman checkout";
+});
 
+// Rute untuk halaman dashboard, hanya untuk pengguna yang terautentikasi
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+// Grup middleware untuk pengaturan terkait pengguna yang terautentikasi
 Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+    Route::redirect('settings', 'settings/profile'); // Redirect ke halaman profil
 
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php'; // Memuat rute otentikasi
