@@ -2,11 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\HomeController;
 
 // Rute untuk homepage
 Route::get('/', function() {
     return view('web.homepage'); // Halaman utama
 });
+
+// Rute untuk halaman home (Diperbaiki)
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Rute untuk halaman Products
 Route::get('product', function() {
